@@ -1,0 +1,246 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <style>
+            .btn {
+                padding: 0px 15px 0px 0px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Anthropos Demos</h1>
+
+        <h3>Demo 1 - Rose Smith</h3>
+        <p>
+            <a href="/demo1/phone/page1.html" class="btn natconf-story" id="story-one-family-app">App ( Phone )</a>
+            <a href="/demo1/tablet/page1.html" class="btn natconf-story" id="story-one-dashboard">Dashboard ( Desktop )</a>
+
+            <div id="story-one-counter-disabled" style="display: block;">
+                <!-- <p>The counter is Disabled. Clicking on each demo does not count toward the total amount of clicks</p> -->
+                <button id="story-one-counter-disabled-button">Disable counter</button>
+            </div>
+
+            <div id="story-one-counter-enabled" style="display: block;">
+                <!-- <p>The counter is Disabled. Clicking on each demo does not count toward the total amount of clicks</p> -->
+                <button id="story-one-counter-enabled-button">Enable counter</button>
+            </div>
+
+            <div id="story-one-counter-enabled" style="display: block">
+                <p>Family App total clicks: <span id="family-app-story-one-total-clicks"></span></p>
+                <button id="family-app-story-one-minus-click">Remove one click</button>
+                <button id="family-app-story-one-plus-click">Add one click</button>
+
+                <p id="dashboard-story-one-total-clicks">Dashboard total clicks: <span id="story-one-dashboard-total-clicks"></span></p>
+            </div>
+        </p>
+
+        <h3>Demo 2 - John Jenkins</h3>
+        <p>
+            <a href="/demo2/phone/page1.html" class="btn natconf-story" id="story-two-family-app">App ( Phone )</a>
+            <a href="/demo2/tablet/page1.html" class="btn natconf-story" id="story-two-dashboard">Dashboard ( Desktop )</a>
+        </p>
+
+        <h3>Demo 3 - David Bell </h3>
+        <p>
+            <a href="/demo3/phone/page1.html" class="btn">App ( Phone )</a>
+            <a href="/demo3/tablet/page1.html" class="btn">Dashboard ( Desktop )</a>
+        </p>
+
+        <h3>Demo 4 - Google Home</h3>
+        <p>
+            <a href="/demo4/phone/page.html" class="btn">App ( Phone )</a>
+            <a href="/demo5/tablet/page.html" class="btn">Dashboard ( Desktop )</a>
+        </p>
+
+        <h2>API</h2>
+        <h3>Demo 1</h3>
+        <p>
+            <a href="/api/prev?pathname=/demo1/" class="btn">&lt;&lt; Prev</a>
+            <a href="/api/next?pathname=/demo1/" class="btn">Next &gt;&gt;</a>
+            <a href="/api/reset?pathname=/demo1/" class="btn">- Reset -</a>
+        </p>
+        <h3>Demo 2</h3>
+        <p>
+            <a href="/api/prev?pathname=/demo2/" class="btn">&lt;&lt; Prev</a>
+            <a href="/api/next?pathname=/demo2/" class="btn">Next &gt;&gt;</a>
+            <a href="/api/reset?pathname=/demo2/" class="btn">- Reset -</a>
+        </p>
+        <h3>Demo 3</h3>
+        <p>
+            <a href="/api/prev?pathname=/demo3/" class="btn">&lt;&lt; Prev</a>
+            <a href="/api/next?pathname=/demo3/" class="btn">Next &gt;&gt;</a>
+            <a href="/api/reset?pathname=/demo3/" class="btn">- Reset -</a>
+        </p>
+        <h3>Demo 4</h3>
+        <p>
+            <a href="/api/prev?pathname=/demo4/" class="btn">&lt;&lt; Prev</a>
+            <a href="/api/next?pathname=/demo4/" class="btn">Next &gt;&gt;</a>
+            <a href="/api/reset?pathname=/demo4/" class="btn">- Reset -</a>
+        </p>
+    </body>
+    <script>
+
+            /**
+             * NOTES
+             * -----
+             * 
+             * - When visiting the home page for the first time ( on a new device / browser ) the program does not record clicks; its in test mode.
+             * - When clicking the enable counter, the counter will begin to increment for each demo.
+             * - When clicking the disable counter, the counter will NOT increment for any demo.
+             * 
+             * TODO's
+             * ------
+             * - it will probably be a good idea to display in the UI, when the counter is enabled / disabed, so that its clear to the user.
+             */ 
+
+            /**
+             * Initialise the counter variables to 0, so we have values to work with for the rest of the program.
+             */ 
+            let storyOneFamilyAppCounter=0;
+            let storyOneDashboardCounter=0;
+
+            /**
+             * Check if there is a store.
+             * Save clicks to local storage.
+             */
+            getStorage();
+            function getStorage() {
+                storyOneFamilyAppCounter = localStorage.getItem('storyOneFamilyAppCounter');
+                storyOneDashboardCounter = localStorage.getItem('storyOneDashboardCounter');
+
+                if( storyOneFamilyAppCounter === null ){
+                    localStorage.setItem('storyOneFamilyAppCounter', 0)
+                }   
+                if( storyOneDashboardCounter === null ){
+                    localStorage.setItem('storyOneDashboardCounter', 0)
+                }                              
+            }
+            
+            /**
+             *  Display total amount of clicks
+             */
+  
+            // story one
+            var storyOneFamilAppTotalClicks = document.getElementById('family-app-story-one-total-clicks');
+            storyOneFamilAppTotalClicks.innerText = localStorage.getItem('storyOneFamilyAppCounter');
+
+            var storyOneDashboardTotalClicks = document.getElementById('story-one-dashboard-total-clicks');
+            storyOneDashboardTotalClicks.innerText = localStorage.getItem('storyOneDashboardCounter');
+            
+            /**
+             * Click handlers to increment counters for when someone clicks on the app / dashboard link
+             */
+            // var storyOneFamilyApp = document.querySelector('#story-one-family-app')
+            // storyOneFamilyApp.addEventListener('click', () => {                
+            //     storyOneFamilyAppCounter++;                
+            //     console.log('// storyOneFamilyAppCounter is:');
+            //     console.log(storyOneFamilyAppCounter);
+            //     localStorage.setItem('storyOneFamilyAppCounter', storyOneFamilyAppCounter);
+            // });  
+
+            // var storyOneDashboard = document.querySelector('#story-one-dashboard')
+            // storyOneDashboard.addEventListener('click', () => {                
+            //     storyOneDashboardCounter++;                
+            //     console.log('// storyOneDashboardCounter is:');
+            //     console.log(storyOneDashboardCounter);
+            //     localStorage.setItem('storyOneDashboardCounter', storyOneDashboardCounter)
+            // });  
+
+            /**
+             * Click handlers for removing SINGLE clicks 
+             */
+            // family-app-story-one-minus-click
+            var storyOneFamilyAppRemoveClick = document.querySelector('#family-app-story-one-minus-click');
+            storyOneFamilyAppRemoveClick.addEventListener('click', () => {
+                
+                var confirmation = confirm("are you sure you want to remove a click?");
+                if( confirmation === true ) {
+                    storyOneFamilyAppCounter--;
+                    localStorage.setItem('storyOneFamilyAppCounter', storyOneFamilyAppCounter);
+                    
+                    // Update the click count in the UI
+                    storyOneFamilAppTotalClicks.innerText = storyOneFamilyAppCounter;
+                }
+            });
+    
+            /**
+             * disable click counter
+             */            
+            var counterDisabledButton = document.getElementById('story-one-counter-disabled-button');
+            counterDisabledButton.addEventListener('click', () => {
+                var confirmation = confirm("Are you sure you want to disable the counter?");
+                if( confirmation === true ){         
+                    // flag to signify the counter will not increase           
+                    localStorage.setItem('counterEnabled', false);             
+                    counterClickHandlersDisable();               
+                }
+            });
+
+            /**
+             * enable click counter
+             */            
+             var counterEnabledButton = document.getElementById('story-one-counter-enabled-button');
+             counterEnabledButton.addEventListener('click', () => {
+                var confirmation = confirm("Are you sure you want to enable the counter?");
+                if( confirmation === true ){   
+                    // flag to signify the counter WILL increase                 
+                    localStorage.setItem('counterEnabled', true);   
+                    counterClickHandlers();                         
+                }
+            });            
+
+            /**
+             * Each time the page loads we need to check if the user has enabled the counter.
+             * If the local storage record is true, then we enable the counter click handlers by invoking the generic 
+             *  counterClickHandlers function
+             */ 
+            var counterEnabledStatus = localStorage.getItem('counterEnabled');
+            if( counterEnabledStatus === 'true' ) {
+                counterClickHandlers();
+            }
+
+            /**
+             * Generic counter enable function
+             */
+            function counterClickHandlers() {
+                var storyOneFamilyApp = document.querySelector('#story-one-family-app')
+                storyOneFamilyApp.addEventListener('click', incrementStoryOneFamilyAppCounter, true); // remember to supply the user 3rd userCapture boolean so removeEventListener will work
+                var storyOneDashboard = document.querySelector('#story-one-dashboard')
+                storyOneDashboard.addEventListener('click', incrementStoryOneDashboardCounter, true); // remember to supply the user 3rd userCapture boolean so removeEventListener will work
+            }
+            /* // Increment counter callbacks // */
+            function incrementStoryOneFamilyAppCounter()  {                
+                storyOneFamilyAppCounter++;                
+                console.log('// storyOneFamilyAppCounter is:');
+                console.log(storyOneFamilyAppCounter);
+                    localStorage.setItem('storyOneFamilyAppCounter', storyOneFamilyAppCounter);
+            }
+            function incrementStoryOneDashboardCounter() {                
+                storyOneDashboardCounter++;                
+                console.log('// storyOneDashboardCounter is:');
+                console.log(storyOneDashboardCounter);
+                localStorage.setItem('storyOneDashboardCounter', storyOneDashboardCounter)
+            }
+
+            /**
+             * Disable the event listeners for the links.
+             * Clicking through to the family app / dashboard wont increment either counter. 
+             */
+            function counterClickHandlersDisable() {                
+                var storyOneFamilyApp = document.querySelector('#story-one-family-app')
+                storyOneFamilyApp.removeEventListener("click", incrementStoryOneFamilyAppCounter, true); // remember to supply the user 3rd userCapture boolean so removeEventListener will work
+    
+                var storyOneDashboard = document.querySelector('#story-one-dashboard')
+                storyOneDashboard.removeEventListener("click", incrementStoryOneDashboardCounter, true); // remember to supply the user 3rd userCapture boolean so removeEventListener will work
+            }
+
+
+            // @JC refactor: loop through all natconf-story links and add a click handler to each one
+         
+
+        </script>
+</html>
